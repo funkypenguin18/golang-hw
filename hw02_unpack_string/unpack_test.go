@@ -23,7 +23,7 @@ func TestUnpack(t *testing.T) {
 		{input: "!2@", expected: "!!@"},
 		{input: "😄3", expected: "😄😄😄"},
 		{input: "a3b5", expected: "aaabbbbb"},
-		// uncomment if task with asterisk completed
+		// Uncomment if task with asterisk completed
 		// {input: `qwe\4\5`, expected: `qwe45`},
 		// {input: `qwe\45`, expected: `qwe44444`},
 		// {input: `qwe\\5`, expected: `qwe\\\\\`},
@@ -31,7 +31,7 @@ func TestUnpack(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
+		// Убираем строку `tc := tc`
 		t.Run(tc.input, func(t *testing.T) {
 			result, err := Unpack(tc.input)
 			require.NoError(t, err)
@@ -46,8 +46,9 @@ func TestUnpackInvalidString(t *testing.T) {
 		"45",     // only digits
 		"aaa10b", // invalid repetition at the end
 	}
+
 	for _, tc := range invalidStrings {
-		tc := tc
+		// Убираем строку `tc := tc`
 		t.Run(tc, func(t *testing.T) {
 			_, err := Unpack(tc)
 			require.Truef(t, errors.Is(err, ErrInvalidString), "actual error %q", err)
