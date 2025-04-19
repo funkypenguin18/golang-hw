@@ -13,15 +13,14 @@ func Unpack(s string) (string, error) {
 	lastChar := rune(0)
 	count := 0
 	for i, r := range s {
-		if r >= '0' && r <= '9' {
-			if unicode.IsDigit(r) { // Если текущий символ это цифра
-				// Если цифра идет в начале строки или после другой цифры, это ошибка
-				if i == 0 || i > 0 && unicode.IsDigit(rune(s[i-1])) {
-					return "", ErrInvalidString
-				}
+		if unicode.IsDigit(r) { // Если текущий символ это цифра
+			// Если цифра идет в начале строки или после другой цифры, это ошибка
+			if i == 0 || i > 0 && unicode.IsDigit(rune(s[i-1])) {
+				return "", ErrInvalidString
 			}
+
 			if r == '0' {
-				continue //если 0 ничего не делаем
+				continue // если 0 ничего не делаем
 			}
 			count := int(r - '0') // Конвертируем символ в цифру
 			builder.WriteString(strings.Repeat(string(lastChar), count))
