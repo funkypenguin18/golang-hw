@@ -37,7 +37,7 @@ func Unpack(s string) (string, error) {
 		}
 	}
 	// Если последний символ не 0 то его добавляем в строку
-	if lastChar != 0 && s[len(s)-1] != '0' {
+	if lastChar != 0 && !unicode.IsDigit(rune(s[len(s)-1])) {
 		builder.WriteRune(lastChar)
 	}
 	return builder.String(), nil
