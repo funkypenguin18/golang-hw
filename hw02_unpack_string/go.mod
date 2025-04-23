@@ -1,4 +1,4 @@
-module github.com/funkypenguin18/hw02_unpack_string
+module github.com/funkypenguin18/golang-hw/hw02_unpack_string
 
 go 1.23
 

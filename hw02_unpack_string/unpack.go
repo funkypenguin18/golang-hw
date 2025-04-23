@@ -10,35 +10,30 @@ var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(s string) (string, error) {
 	var builder strings.Builder
-	lastChar := rune(0)
-	count := 0
+	var lastChar rune
+
 	for i, r := range s {
 		if unicode.IsDigit(r) { // Если текущий символ это цифра
-			// Если цифра идет в начале строки или после другой цифры, это ошибка
-			if i == 0 || i > 0 && unicode.IsDigit(rune(s[i-1])) {
+			if i == 0 { // Если цифра в начале строки, строка некорректна
 				return "", ErrInvalidString
 			}
-
-			if r == '0' {
-				continue // если 0 ничего не делаем
+			if lastChar == 0 { // Если предыдущий символ был не буквой, строка некорректна
+				return "", ErrInvalidString
 			}
-			count := int(r - '0') // Конвертируем символ в цифру
-			builder.WriteString(strings.Repeat(string(lastChar), count))
+			count := int(r - '0')                                        // Конвертируем символ в цифру
+			builder.WriteString(strings.Repeat(string(lastChar), count)) // Добавляем повторяющийся символ в builder
+			lastChar = 0
 		} else {
-			// Проверка на наличие предыдущего символа для создания результата
-			if lastChar != 0 && count != 0 {
-				return "", ErrInvalidString
-			}
-			// Если это не первый символ и не цифра
-			if i > 0 && !unicode.IsDigit(rune(s[i-1])) {
-				builder.WriteRune(lastChar)
+			if lastChar != 0 {
+				builder.WriteRune(lastChar) // Добавляем предыдущий символ в builder, есди это не цифра
 			}
 			lastChar = r
 		}
 	}
-	// Если последний символ не 0 то его добавляем в строку
-	if lastChar != 0 && !unicode.IsDigit(rune(s[len(s)-1])) {
-		builder.WriteRune(lastChar)
+
+	if lastChar != 0 {
+		builder.WriteRune(lastChar) // Если последний символ был буквой, добавляем его в builder
 	}
+
 	return builder.String(), nil
 }
