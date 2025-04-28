@@ -79,4 +79,19 @@ func TestTop10(t *testing.T) {
 			require.Equal(t, expected, Top10(text))
 		}
 	})
+	t.Run("less than ten words", func(t *testing.T) {
+		text := "one two three"
+		expected := []string{"one", "three", "two"}
+		require.Equal(t, expected, Top10(text))
+	})
+	t.Run("words with different cases", func(t *testing.T) {
+		text := "Проверка больших Ималеньких букв"
+		expected := []string{"Ималеньких", "Проверка", "больших", "букв"}
+		require.Equal(t, expected, Top10(text))
+	})
+	t.Run("whitespaces and tabs", func(t *testing.T) {
+		text := "word1\tword2\nword1    word3\t\tword2 word1"
+		expected := []string{"word1", "word2", "word3"}
+		require.Equal(t, expected, Top10(text))
+	})
 }
